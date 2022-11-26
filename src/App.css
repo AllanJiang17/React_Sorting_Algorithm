@@ -1,13 +1,41 @@
 .App {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   text-align: center;
   background-color: #30353d;
   min-height: 100vh;
+  color: white;
+  width: 100%;
 }
 
 .App-header {
   padding-top: 1.5%;
-  display: flex;
-  flex-direction: column;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.App button{
+  margin: 1%;
+  width: 10%;
+  font-size: calc(3px + 2vmin);
+}
+
+.App .userInput{
+  margin: 10%;
+}
+
+.frame {
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  font-size: calc(8px + 2vmin);
+}
+
+.individualBar{
+  margin-left:10%;
+  margin-right:10%;
+  font-size: calc(7vmin);
 }

@@ -1,4 +1,5 @@
 import './App.css';
+import Bar from './bar/bar';
 import { Component } from 'react';
 
 class App extends Component{
@@ -8,7 +9,8 @@ class App extends Component{
       array: [4,5,2,1,6,9,8,7],
       delay: 400,
       currentStep: 0,
-      timeouts: []
+      timeouts: [],
+      pastArray: []
     };
     this.play = this.play.bind(this);
   }
@@ -21,7 +23,7 @@ class App extends Component{
     this.state.timeouts.forEach((timeout) => clearTimeout(timeout));
 		this.setState({ 
       timeouts: [],
-      array: [4,5,2,1,6,9,8,7],
+      array: this.state.pastArray,
       currentStep: 0
     });
   }
@@ -66,22 +68,49 @@ class App extends Component{
     }
     return steps;
   }
+  
+  handleChange = (event) =>{
+    this.setState({
+      array: event.target.value.split(',').map(i => {
+        return parseInt(i);
+      }),
+      pastArray: event.target.value.split(',').map(i => {
+        return parseInt(i);
+      })
+    });
+    console.log(this.state.array);
+  }
 
   render() {
+    let bar = this.state.array.map(int => {
+      return <h1 className='individualBar'>{int}</h1>;
+    })
     return (
       <div className='App'>
+
         <header className='App-header'>
           Sorting Algorithm Visualizer
         </header>
-        <h1>
-          {this.state.array}
-        </h1>
+
+        <div className='frame'>
+          {bar}
+        </div>
+
         <button onClick={this.play}>
           Start
         </button>
+
         <button onClick={this.reset}>
           Reset
         </button>
+
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          List:
+          <input className='userInput' type="text" onChange={this.handleChange}/>
+        </label>
+      </form>
+
       </div>
     );
   }
