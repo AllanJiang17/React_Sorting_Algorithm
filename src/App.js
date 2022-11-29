@@ -1,6 +1,9 @@
 import './App.css';
 import Bar from './bar/bar';
 import { Component } from 'react';
+import Algorithm from './algorithm';
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 
 class App extends Component{
   constructor(props){
@@ -10,13 +13,13 @@ class App extends Component{
       delay: 400,
       currentStep: 0,
       timeouts: [],
-      pastArray: []
+      pastArray: [4,5,2,1,6,9,8,7]
     };
-    this.play = this.play.bind(this);
+    this.algorithm = Algorithm.bubbleSort;
   }
 
   play = () => {
-    this.update(this.bubbleSort());
+    this.update(this.algorithm(this.state.array));
   }
 
   reset = () => {
@@ -49,26 +52,6 @@ class App extends Component{
     })
   }
   
-  swap = (arr, xp, yp) => {
-    var temp = arr[xp];
-    arr[xp] = arr[yp];
-    arr[yp] = temp;
-  }
-  
-  bubbleSort(){
-    var i, j, n = this.state.array.length, arr = this.state.array;
-    var steps = [];
-    for (i = 0; i < n-1; i++){
-      for (j = 0; j < n-i-1; j++){
-        if (arr[j] > arr[j+1]){
-          this.swap(arr,j,j+1);
-        }
-        steps.push(arr.slice());
-      }
-    }
-    return steps;
-  }
-  
   handleChange = (event) =>{
     this.setState({
       array: event.target.value.split(',').map(i => {
@@ -81,16 +64,36 @@ class App extends Component{
     console.log(this.state.array);
   }
 
+  onSelect = (event) => {
+    switch(event.value) {
+      case "Bubble Sort":
+        this.algorithm = Algorithm.bubbleSort;
+        break;
+      case "Insertion Sort":
+        this.algorithm = Algorithm.insertionSort;
+        break;
+      default:
+        this.algorithm = Algorithm.bubbleSort;
+    }
+  }
+
   render() {
     let bar = this.state.array.map(int => {
       return <h1 className='individualBar'>{int}</h1>;
     })
+
+    const options = [
+      'Bubble Sort', 'Insertion Sort'
+    ];
+
     return (
       <div className='App'>
 
         <header className='App-header'>
           Sorting Algorithm Visualizer
         </header>
+
+        <Dropdown className='dropDown' options={options} onChange={this.onSelect} placeholder="Select an Algorithm" />
 
         <div className='frame'>
           {bar}
